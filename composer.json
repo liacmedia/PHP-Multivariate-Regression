@@ -1,0 +1,12 @@
+{
+  "name": "ExpandOnline/PHP-Multivariate-Regression",
+  "autoload": {
+    "psr-4": {
+      "Regression\\": "Regression",
+      "Test\\": "Tests"
+    }
+  },
+  "require": {
+    "php": "> 5.4"
+  }
+}
