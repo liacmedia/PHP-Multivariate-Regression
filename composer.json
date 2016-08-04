@@ -1,5 +1,5 @@
 {
-  "name": "ExpandOnline/PHP-Multivariate-Regression",
+  "name": "LiacMedia/PHP-Multivariate-Regression",
   "autoload": {
     "psr-4": {
       "Regression\\": "Regression",
