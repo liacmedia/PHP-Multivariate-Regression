@@ -373,7 +373,15 @@ class Matrix
         $cofactorMatrix = new Matrix($newMatrix);
 
         if ($this->getDeterminant() === 0) {
-            throw new MatrixException("Cannot invert when determinant is 0");
+            /**
+             * The determinant of a matrix will be zero if
+             * - An entire row is zero.
+             * - Two rows or columns are equal.
+             * - A row or column is a constant multiple of another row or column.
+             * Remember, that a matrix is invertible, non-singular, if and only if the determinant is not zero.
+             * So, if the determinant is zero, the matrix is singular and does not have an inverse.
+             */
+            throw new MatrixException("Matrix is singular, cannot invert when determinant is 0", MatrixException::ERROR_DETERMINANT_ZERO);
         }
 
         return $cofactorMatrix->transpose()

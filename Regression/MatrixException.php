@@ -8,5 +8,5 @@ namespace Regression;
  */
 class MatrixException extends \Exception
 {
-    
+    const ERROR_DETERMINANT_ZERO = 1000;
 }
