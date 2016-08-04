@@ -1,5 +1,5 @@
 {
-  "name": "LiacMedia/PHP-Multivariate-Regression",
+  "name": "liacmedia/PHP-Multivariate-Regression",
   "autoload": {
     "psr-4": {
       "Regression\\": "Regression",
