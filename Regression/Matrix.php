@@ -46,28 +46,30 @@ class Matrix
      *
      * @param array $array - The array
      */
+
     public function __construct($array)
     {
-        if(!is_array($array)){
+        if (!is_array($array)) {
             throw new MatrixException('Please provide an array of arrays.');
         }
-        
-        if(!is_array($array[0])){
+
+        if (!is_array($array[0])) {
             throw new MatrixException('Please provide an array of arrays.');
         }
-        
+
         $numRows = count($array);
         $numCols = count($array[0]);
-        
-        for($i = 0; $i < $numRows; $i++){
+
+        foreach ($array as $key => $test) {
             //Do this count on every row to check for jagged matrices
-            for($j = 0; $j < count($array[$i]); $j++){
-                $this->MainMatrix[$i][$j] = $array[$i][$j];
+            foreach ($test as $jKey => $jVal) {
+                $this->MainMatrix[$key][$jKey] = $array[$key][$jKey];
             }
         }
+
         $this->rows = $numRows;
         $this->columns = $numCols;
-        if(!$this->isValidMatrix()){
+        if (!$this->isValidMatrix()) {
             throw new MatrixException("Invalid matrix");
         }
     }
@@ -332,9 +334,10 @@ class Matrix
         $newArray = array();
         $rows = $this->rows;
         $columns = $this->columns;
-        
-        for($i = 0; $i < $rows; $i++){
-            for($j = 0; $j < $columns; $j++){
+
+
+        foreach ($this->MainMatrix as $i => $iVal) {
+            foreach ($iVal as $j => $jVal) {
                 $newArray[$j][$i] = $this->MainMatrix[$i][$j];
             }
         }
@@ -349,27 +352,32 @@ class Matrix
      */
     public function invert()
     {
-        if(!$this->isSquareMatrix()){
+        if (!$this->isSquareMatrix()) {
             throw new MatrixException("Not a square matrix!");
         }
-        
+
         $newMatrix = array();
         $rows = $this->rows;
         $columns = $this->columns;
-        
-        for($i = 0; $i < $rows; $i++){
-            for($j = 0; $j < $columns; $j++){
+
+        for ($i = 0; $i < $rows; $i++) {
+            for ($j = 0; $j < $columns; $j++) {
                 $subMatrix = $this->getSubMatrix($i, $j);
-                if(fmod($i + $j, 2) == 0){
+                if (fmod($i + $j, 2) == 0) {
                     $newMatrix[$i][$j] = ($subMatrix->getDeterminant());
-                }else{
+                } else {
                     $newMatrix[$i][$j] = -($subMatrix->getDeterminant());
                 }
             }
         }
         $cofactorMatrix = new Matrix($newMatrix);
+
+        if ($this->getDeterminant() === 0) {
+            throw new MatrixException("Cannot invert when determinant is 0");
+        }
+
         return $cofactorMatrix->transpose()
-                        ->scalarDivide($this->getDeterminant());
+            ->scalarDivide($this->getDeterminant());
     }
     
     public function getTrace()
@@ -486,15 +494,15 @@ class Matrix
      */
     protected function isValidMatrix()
     {
-        for($i = 0; $i < $this->rows; $i++){
-            $numCol = count($this->MainMatrix [$i]);
-            if($this->columns != $numCol){
+        foreach ($this->MainMatrix as $key => $item) {
+            $numCol = count($this->MainMatrix [$key]);
+            if ($this->columns != $numCol) {
                 return false;
             }
         }
         return true;
     }
-    
+
     protected function getDiagonal()
     {
         $diagonal = array();
